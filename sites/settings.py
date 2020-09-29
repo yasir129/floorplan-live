@@ -25,7 +25,7 @@ SECRET_KEY = '3$+e&(7g_=+$1_a1#g33#@v4$*$bjgrwghk_co3((jqb5a6b-!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['floorplanproject.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
