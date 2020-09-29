@@ -1,0 +1,57 @@
+	import os
+	import sys
+	import random
+	import math
+	import re
+	import time
+	import numpy as np
+	import tensorflow as tf
+	import matplotlib
+	import matplotlib.pyplot as plt
+	import matplotlib.patches as patches
+	ROOT_DIR = os.path.abspath(r"C:\Users\YASIR\Desktop\sites\main\Mask_RCNN-master")
+	sys.path.append(ROOT_DIR) 
+	from mrcnn import utils
+	from mrcnn import visualize
+	from mrcnn.visualize import display_images
+	import mrcnn.model as modellib
+	from mrcnn.model import log
+	from samples.balloon import balloon 
+	gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction = 0.50)
+	sess = tf.Session(config = tf.ConfigProto(gpu_options = gpu_options))
+	MODEL_DIR = os.path.join(ROOT_DIR, "logs/mask_rcnn_wall_0053.h5")
+	BALLON_WEIGHTS_PATH = r"C:\Users\YASIR\Desktop\sites\main\Mask_RCNN-master\logs\mask_rcnn_wall_0053.h5"  # TODO: update this path
+	config = balloon.BalloonConfig()
+	BALLOON_DIR = os.path.join(ROOT_DIR, "samples/balloon/dataset/")
+	class InferenceConfig(config.__class__):
+		GPU_COUNT = 1
+		IMAGES_PER_GPU = 1
+	config = InferenceConfig()
+	config.display()
+	DEVICE = "/gpu:0" 
+	TEST_MODE = "inference"
+	with tf.device(DEVICE):
+	    model = modellib.MaskRCNN(mode="inference", model_dir=MODEL_DIR,
+	                              config=config)
+	model.load_weights(r"C:\Users\YASIR\Desktop\sites\main\Mask_RCNN-master\logs\mask_rcnn_wall_0053.h5", by_name=True)
+	class_names = ['BG', 'wall']
+	from skimage import filters 
+	from skimage import data 
+	import skimage
+	image = skimage.io.imread(r"C:\Users\YASIR\IIa_DE1110.png")
+	results = model.detect([image], verbose=1)
+	r = results[0]
+	mask = r['masks']
+	mask = mask.astype(int)
+	mask.shape
+	import skimage
+	temp = skimage.io.imread(r'C:\Users\YASIR\IIa_DE1110.png')
+	w,h,e = temp.shape[:3]
+	temp1 = np.zeros((w,h,e),dtype=np.uint8)
+	
+	for i in range(mask.shape[2]):
+	    temp = np.zeros((w,h,e),dtype=np.uint8)
+	    temp = np.where(temp==0,255,temp)
+	    for j in range(temp.shape[2]):
+	        temp[:,:,j] = temp[:,:,j] * mask[:,:,i]
+	print(temp1)

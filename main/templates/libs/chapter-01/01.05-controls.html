@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>01.05 - Controls</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/style.css/' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/design.css/' %}">
+    <link rel="stylesheet" type="text/css" href="design.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+</head>
+<body>
+    <p id='x' hidden>{{walls}}</p>
+    <p id='h' hidden>{{H}}</p>
+    <p id='w' hidden>{{W}}</p>
+    <p id='wc_y' hidden>{{x_center}}</p>
+    <p id='wc_x' hidden>{{y_center}}</p>
+    <p id='sink_x' hidden>{{sink_x}}</p>
+    <p id='sink_y' hidden>{{sink_y}}</p>
+    <div id="mySidebar" class="sidebar transition">
+        <div id="blocker">
+            <img class='icon' src="{% static '/assets/drone.png' %}">
+            <a class="menu" id="instructions">Fly Camera</a>
+        </div>
+      <div class="container_block">
+
+        <div id="toggle_func" class="heading_container">
+          <h6>Add Items</h6>
+        </div>
+
+       <div id="horizon">
+         
+       </div>
+      </div>
+          
+      <div class="adjust_container" id="adjust_viewer">
+         <div class="adjust_heading"> 
+          <h6>Adjust size</h6>
+        </div>
+        <div class="text_box">
+          <p><b>Scale</b></p>
+          <p>Press "L" arrow key to increase size</p>
+          <p>Press "J" arrow key to increase size</p>
+          <p><b>Change Height</b></p>
+          <p>Press "I" arrow key to increase height</p>
+          <p>Press "K" arrow key to decrease height</p>
+          <p><b>Rotate</b></p>
+          <p>Press "Q" for clock wise</p>
+          <p>Press "E" for anti click wise</p>
+        </div>
+        <div class="remove_button">
+          <button onclick="removeObject()">Remove Object</button>
+        </div>
+
+      </div>
+      <div class="texture_container" id="texture_viewer">
+        <div class="adjust_heading"> 
+          <h6>Texture</h6>
+        </div>
+        <img src="{% static '/assets/textureFolder\walls\download.jpg' %}" onClick="TextureChange(this)"/>
+        <img src="{% static '/assets/textureFolder\walls\wall-vector-texture.jpg' %}" onClick="TextureChange(this)"/>
+        <img src="{% static '/assets/textureFolder\walls\white-stucco-wall-texture_23-2148361812.jpg' %}" onClick="TextureChange(this)"/>
+          <img src="{% static '/assets/textureFolder\walls\brick.jpg' %}" onClick="TextureChange(this)"/>
+          <img src="{% static '/assets/textureFolder\walls\white.jpg' %}" onClick="TextureChange(this)"/>
+      </div>
+      <div id="toggleEdit" onclick="editMode()" class="edit_container">
+         Change Texture
+      </div>
+      <div  id = "toggle_transform" onclick="transform_mode1()" class="transform_container">
+         Transform Objects
+      </div>
+      <div onclick="save1()" class="export_model">
+        Export Model
+      </div>
+      <div class="debuging_container">
+        <button type="button" class="btn btn-info btn-lg bg-info" data-toggle="modal" data-target="#myModal">OPEN DEBUGGING PANEL</button>
+      </div>   
+    </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Debugging pannel</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <p><b>Walls Cordinates</b></p>
+              <div class="debug_panel">
+                <div id="values_walls" class="values_container">
+                </div>
+              </div>
+              <p><b>Images</b></p>
+              <div class="debug_panel">
+                <p><b>Seperated Walls</b></p>
+                <img src="data:image/jpg;base64,{{img1}}">
+                <p><b>Mask Image</b></p>
+                <img src="data:image/jpg;base64,{{img2}}">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div id="open" class="transition" onclick="openNav()">
+        <div id="arrow">&#x203A;</div>
+    </div>
+    <div id="close" class="transition" onclick="closeNav()">
+        <div id="arrow">&#x2039;</div>
+    </div>
+    <div id='unlock' class="unlock_button">
+      <img src="{% static '/assets/unlock.jpg' %}"/>
+    </div>
+    </body>
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js\navigation_slider.js' %}"></script>
+     <script type="text/javascript" src="{% static 'libs\build\three.js' %}"></script>
+     <script type="text/javascript" src="{% static 'libs\examples\js\controls\PointerLockControls.js' %}"></script>
+     <script type="text/javascript" src="{% static 'libs\examples\js\controls\FirstPersonControls.js' %}"></script>
+     <script type="text/javascript" src="{% static 'libs\examples\js\controls\TransformControls.js' %}"></script>
+     <script type="text/javascript" src="{% static 'libs\examples\js\controls\OrbitControls.js' %}"></script>
+     <script type="text/javascript" src="{% static 'libs\examples\js\controls\DragControls.js' %}"></script>
+     <script type="text/javascript" src="{% static 'libs\examples\js\loaders\OBJLoader.js' %}"></script>
+     <script type="text/javascript" src="{% static 'libs\examples\js\loaders\MTLLoader.js' %}"></script>
+     <script type="text/javascript" src="{% static 'libs\examples\js\loaders\GLTFLoader.js' %}"></script>
+     <script type="text/javascript" src="{% static 'libs\examples\js\exporters\GLTFExporter.js' %}"></script>
+     <script type="text/javascript" src="{% static 'libs\examples\js\loaders\DRACOLoader.js' %}"></script>
+     <script type="text/javascript" src="{% static 'js\model_map.js' %}"></script>
+     <script type="text/javascript" src="{% static 'js\fly_slider.js' %}"></script>
+     <script type="text/javascript" src="{% static 'js\object_panel.js' %}"></script>
+     <script type="text/javascript" src="{% static 'js\render.js' %}"></script>
+     <script type="text/javascript" src="{% static 'js\export.js' %}"></script>
+    <script>
+        window.addEventListener( 'click', onMouseMove, false );
+        window.onload = init;
+</script>
+    
+</html>
+
+
+
+
+
